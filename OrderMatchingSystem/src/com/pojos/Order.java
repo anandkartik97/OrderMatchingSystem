@@ -1,9 +1,9 @@
 package com.pojos;
-import java.sql.Time;
+import java.sql.Timestamp;
 
 public class Order {
 	private int orderID;
-	private Time timestamp;	//sql.timestamp
+	private Timestamp timestamp;	//sql.timestamp
 	private double price;
 	private String category;
 	private String status;
@@ -13,8 +13,22 @@ public class Order {
 	private int traderID;
 	private int ISIN;
 	private int disclosedQuantity;
-	public Order(int orderID, Time timestamp, double price, String category, String status, int quantity, String type,
-			String condition, int traderID, int iSIN, int disclosedQuantity) {
+	public Order() {
+		super();
+		orderID =0;
+		timestamp = new Timestamp(2019, 01, 01, 00, 00, 00, 00);
+		price = 0.0;
+		category = null;
+		status = null;
+		quantity = 0;
+		type = null;
+		condition = null;
+		traderID = 0;
+		ISIN = 0;
+		disclosedQuantity = 0;
+	}
+	public Order(int orderID, Timestamp timestamp, double price, String category, String status, int quantity,
+			String type, String condition, int traderID, int iSIN, int disclosedQuantity) {
 		super();
 		this.orderID = orderID;
 		this.timestamp = timestamp;
@@ -28,16 +42,22 @@ public class Order {
 		ISIN = iSIN;
 		this.disclosedQuantity = disclosedQuantity;
 	}
+	@Override
+	public String toString() {
+		return "Order [orderID=" + orderID + ", timestamp=" + timestamp + ", price=" + price + ", category=" + category
+				+ ", status=" + status + ", quantity=" + quantity + ", type=" + type + ", condition=" + condition
+				+ ", traderID=" + traderID + ", ISIN=" + ISIN + ", disclosedQuantity=" + disclosedQuantity + "]";
+	}
 	public int getOrderID() {
 		return orderID;
 	}
 	public void setOrderID(int orderID) {
 		this.orderID = orderID;
 	}
-	public Time getTimestamp() {
+	public Timestamp getTimestamp() {
 		return timestamp;
 	}
-	public void setTimestamp(Time timestamp) {
+	public void setTimestamp(Timestamp timestamp) {
 		this.timestamp = timestamp;
 	}
 	public double getPrice() {
@@ -94,13 +114,7 @@ public class Order {
 	public void setDisclosedQuantity(int disclosedQuantity) {
 		this.disclosedQuantity = disclosedQuantity;
 	}
-	@Override
-	public String toString() {
-		return "Order [orderID=" + orderID + ", timestamp=" + timestamp + ", price=" + price + ", category=" + category
-				+ ", status=" + status + ", quantity=" + quantity + ", type=" + type + ", condition=" + condition
-				+ ", traderID=" + traderID + ", ISIN=" + ISIN + ", disclosedQuantity=" + disclosedQuantity + "]";
-	}
 	
 	
-
+	
 }
