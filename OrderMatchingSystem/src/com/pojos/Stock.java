@@ -10,10 +10,15 @@ public class Stock {
 	private double circuitBreaker;
 	private double tickSize;
 	private double marketPrice;
-	
-	
+	private double lowestPrice;
+	private double highestPrice;
+	private int totalTradedVolume;
+	//private int buyLimitTotal;
+	//private int sellLimitTotal;
+
 	public Stock(int iSIN, String name, String ticker, double lTP, double openingPrice, double closingPrice,
-			double circuitBreaker, double tickSize, double marketPrice) {
+			double circuitBreaker, double tickSize, double marketPrice, double lowestPrice, double highestPrice,
+			int totalTradedVolume) {
 		super();
 		ISIN = iSIN;
 		this.name = name;
@@ -24,6 +29,9 @@ public class Stock {
 		this.circuitBreaker = circuitBreaker;
 		this.tickSize = tickSize;
 		this.marketPrice = marketPrice;
+		this.lowestPrice = lowestPrice;
+		this.highestPrice = highestPrice;
+		this.totalTradedVolume = totalTradedVolume;
 	}
 
 
@@ -117,13 +125,42 @@ public class Stock {
 	}
 
 
+	public double getLowestPrice() {
+		return lowestPrice;
+	}
+
+
+	public void setLowestPrice(double lowestPrice) {
+		this.lowestPrice = lowestPrice;
+	}
+
+
+	public double getHighestPrice() {
+		return highestPrice;
+	}
+
+
+	public void setHighestPrice(double highestPrice) {
+		this.highestPrice = highestPrice;
+	}
+
+
+	public int getTotalTradedVolume() {
+		return totalTradedVolume;
+	}
+
+
+	public void setTotalTradedVolume(int totalTradedVolume) {
+		this.totalTradedVolume = totalTradedVolume;
+	}
+
+
 	@Override
 	public String toString() {
 		return "Stock [ISIN=" + ISIN + ", name=" + name + ", ticker=" + ticker + ", LTP=" + LTP + ", openingPrice="
 				+ openingPrice + ", closingPrice=" + closingPrice + ", circuitBreaker=" + circuitBreaker + ", tickSize="
-				+ tickSize + ", marketPrice=" + marketPrice + "]";
-	}	
-
-	
+				+ tickSize + ", marketPrice=" + marketPrice + ", lowestPrice=" + lowestPrice + ", highestPrice="
+				+ highestPrice + ", totalTradedVolume=" + totalTradedVolume + "]";
+	}
 	
 }
