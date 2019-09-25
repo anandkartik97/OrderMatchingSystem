@@ -4,10 +4,10 @@ import java.sql.Timestamp;
 
 public class Trade {
 	private int tradeID;
-	private int buyOrderID;
-	private int sellOrderID;
-	private int buyerID;
-	private int sellerID;
+	private int buyOrderID; //order_id of buy order
+	private int sellOrderID; //order_id of sell order
+	private int buyerID; //user_id of buyer
+	private int sellerID; //user_id of seller
 	private double price;
 	private Timestamp timestamp;
 	private int quantity;

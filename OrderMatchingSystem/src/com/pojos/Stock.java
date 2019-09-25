@@ -3,7 +3,7 @@ package com.pojos;
 public class Stock {
 	private int ISIN;
 	private String name;
-	private String ticker;
+	private String ticker;	//Stock name in short
 	private double LTP;
 	private double openingPrice;
 	private double closingPrice;
@@ -32,6 +32,22 @@ public class Stock {
 		this.lowestPrice = lowestPrice;
 		this.highestPrice = highestPrice;
 		this.totalTradedVolume = totalTradedVolume;
+	}
+
+
+	public Stock() {
+		ISIN = 0;
+		name = "";
+		ticker = "";
+		LTP = 0;
+		openingPrice = 0;
+		closingPrice = 0;
+		circuitBreaker = 0;
+		tickSize = 0;
+		marketPrice = 0;
+		lowestPrice = 0;
+		highestPrice = 0;
+		totalTradedVolume = 0;
 	}
 
 

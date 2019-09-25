@@ -5,11 +5,11 @@ public class Order {
 	private int orderID;
 	private Timestamp timestamp;	//sql.timestamp
 	private double price;
-	private String category;
-	private String status;
+	private String category; //buy or sell
+	private String status; //pending,rejected and waiting
 	private int quantity;
-	private String type;
-	private String condition;
+	private String type; //market or limit
+	private String condition; //all or none,minimum fill etc.
 	private int traderID;
 	private int ISIN;
 	private int disclosedQuantity;
@@ -18,11 +18,11 @@ public class Order {
 		orderID =0;
 		timestamp = new Timestamp(2019, 01, 01, 00, 00, 00, 00);
 		price = 0.0;
-		category = null;
-		status = null;
+		category = "";
+		status = "";
 		quantity = 0;
-		type = null;
-		condition = null;
+		type = "";
+		condition = "";
 		traderID = 0;
 		ISIN = 0;
 		disclosedQuantity = 0;
