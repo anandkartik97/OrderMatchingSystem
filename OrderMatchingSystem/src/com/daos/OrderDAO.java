@@ -5,11 +5,11 @@ import java.util.List;
 import com.pojos.Order;
 
 public interface OrderDAO {
-	int addOrder(Order orders);
+	int addOrder(Order order);
 	List<Order> getAll();
-	int deleteMatchedOrders(List<Order> orders);
+	int deleteOrder(int orderID);
 	List<Order> getWaitingOrders(int user_id);
 	List<Order> getRejectedOrders(int user_id);
-	boolean cancelOrder(int orderID);
-	boolean updateOrders(int orderID,int quantity);
+	boolean updateQuantity(int orderID,int quantity);
+	boolean updatePrice(int orderID,int price);
 }
