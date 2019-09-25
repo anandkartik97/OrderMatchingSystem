@@ -10,6 +10,6 @@ public interface OrderDAO {
 	int deleteOrder(int orderID);
 	List<Order> getWaitingOrders(int user_id);
 	List<Order> getRejectedOrders(int user_id);
-	boolean updateQuantity(int orderID,int quantity);
+	boolean updateQuantity(int orderID,int quantity);	//return list
 	boolean updatePrice(int orderID,int price);
 }

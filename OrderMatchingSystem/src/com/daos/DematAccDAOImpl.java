@@ -43,6 +43,7 @@ public class DematAccDAOImpl implements DematAccDAO{
 			if(rows>0) {
 				isUpdated=true;
 			}
+			conn.close();
 		}
 		catch(SQLException e) {
 			e.printStackTrace();

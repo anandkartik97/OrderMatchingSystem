@@ -48,6 +48,7 @@ public class StockDAOImpl implements StockDAO{
 			if(rows>0) {
 				isUpdated=true;
 			}
+			conn.close();
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
@@ -68,6 +69,7 @@ public class StockDAOImpl implements StockDAO{
 			if(rows>0) {
 				isUpdated=true;
 			}
+			conn.close();
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
@@ -88,6 +90,7 @@ public class StockDAOImpl implements StockDAO{
 			if(rows>0) {
 				isUpdated=true;
 			}
+			conn.close();
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
@@ -108,6 +111,7 @@ public class StockDAOImpl implements StockDAO{
 			if(rows>0) {
 				isUpdated=true;
 			}
+			conn.close();
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
@@ -128,6 +132,7 @@ public class StockDAOImpl implements StockDAO{
 			if(rows>0) {
 				isUpdated=true;
 			}
+			conn.close();
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
@@ -148,6 +153,7 @@ public class StockDAOImpl implements StockDAO{
 			if(rows>0) {
 				isUpdated=true;
 			}
+			conn.close();
 		}
 		catch(SQLException e) {
 			e.printStackTrace();
@@ -168,6 +174,7 @@ public class StockDAOImpl implements StockDAO{
 			if(rows>0) {
 				isUpdated=true;
 			}
+			conn.close();
 		}
 		catch(SQLException e) {
 			e.printStackTrace();

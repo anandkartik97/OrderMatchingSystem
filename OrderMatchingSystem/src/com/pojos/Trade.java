@@ -10,11 +10,11 @@ public class Trade {
 	private int sellerID; //user_id of seller
 	private double price;
 	private Timestamp timestamp;
+	private Stock stock;
 	private int quantity;
 	
 	public Trade(int tradeID, int buyOrderID, int sellOrderID, int buyerID, int sellerID, double price, Timestamp timestamp,
-			int quantity) {
-		super();
+			int quantity, Stock stock) {
 		this.tradeID = tradeID;
 		this.buyOrderID = buyOrderID;
 		this.sellOrderID = sellOrderID;
@@ -23,6 +23,7 @@ public class Trade {
 		this.price = price;
 		this.timestamp = timestamp;
 		this.quantity = quantity;
+		this.stock = stock;
 	}
 	
 	public Trade() {
@@ -34,7 +35,7 @@ public class Trade {
 		price = 0.0;
 		timestamp = new Timestamp(2019,01, 01, 00, 00, 00, 00);
 		quantity = 0;
-		// TODO Auto-generated constructor stub
+		stock = new Stock();
 	}
 	
 	
@@ -102,11 +103,20 @@ public class Trade {
 		this.quantity = quantity;
 	}
 
+	public Stock getStock() {
+		return stock;
+	}
+
+	public void setStock(Stock stock) {
+		this.stock = stock;
+	}
+
 	@Override
 	public String toString() {
 		return "Trade [tradeID=" + tradeID + ", buyOrderID=" + buyOrderID + ", sellOrderID=" + sellOrderID
 				+ ", buyerID=" + buyerID + ", sellerID=" + sellerID + ", price=" + price + ", timestamp=" + timestamp
-				+ ", quantity=" + quantity + "]";
+				+ ", stock=" + stock + ", quantity=" + quantity + "]";
 	}
+
 	
 }

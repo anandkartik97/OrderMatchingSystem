@@ -10,9 +10,10 @@ public class Order {
 	private int quantity;
 	private String type; //market or limit
 	private String condition; //all or none,minimum fill etc.
-	private int traderID;
-	private int ISIN;
+	private int traderID; //user class object
+	//private int ISIN;//stock object
 	private int disclosedQuantity;
+	private Stock stock;
 	public Order() {
 		super();
 		orderID =0;
@@ -24,11 +25,12 @@ public class Order {
 		type = "";
 		condition = "";
 		traderID = 0;
-		ISIN = 0;
+		//ISIN = 0;
 		disclosedQuantity = 0;
+		stock = new Stock();
 	}
 	public Order(int orderID, Timestamp timestamp, double price, String category, String status, int quantity,
-			String type, String condition, int traderID, int iSIN, int disclosedQuantity) {
+			String type, String condition, int traderID, int disclosedQuantity, Stock stock) {
 		super();
 		this.orderID = orderID;
 		this.timestamp = timestamp;
@@ -39,14 +41,9 @@ public class Order {
 		this.type = type;
 		this.condition = condition;
 		this.traderID = traderID;
-		ISIN = iSIN;
+		//ISIN = iSIN;
 		this.disclosedQuantity = disclosedQuantity;
-	}
-	@Override
-	public String toString() {
-		return "Order [orderID=" + orderID + ", timestamp=" + timestamp + ", price=" + price + ", category=" + category
-				+ ", status=" + status + ", quantity=" + quantity + ", type=" + type + ", condition=" + condition
-				+ ", traderID=" + traderID + ", ISIN=" + ISIN + ", disclosedQuantity=" + disclosedQuantity + "]";
+		this.stock = stock;
 	}
 	public int getOrderID() {
 		return orderID;
@@ -102,19 +99,24 @@ public class Order {
 	public void setTraderID(int traderID) {
 		this.traderID = traderID;
 	}
-	public int getISIN() {
-		return ISIN;
-	}
-	public void setISIN(int iSIN) {
-		ISIN = iSIN;
-	}
 	public int getDisclosedQuantity() {
 		return disclosedQuantity;
 	}
 	public void setDisclosedQuantity(int disclosedQuantity) {
 		this.disclosedQuantity = disclosedQuantity;
 	}
-	
+	public Stock getStock() {
+		return stock;
+	}
+	public void setStock(Stock stock) {
+		this.stock = stock;
+	}
+	@Override
+	public String toString() {
+		return "Order [orderID=" + orderID + ", timestamp=" + timestamp + ", price=" + price + ", category=" + category
+				+ ", status=" + status + ", quantity=" + quantity + ", type=" + type + ", condition=" + condition
+				+ ", traderID=" + traderID + ", disclosedQuantity=" + disclosedQuantity + ", stock=" + stock + "]";
+	}
 	
 	
 }

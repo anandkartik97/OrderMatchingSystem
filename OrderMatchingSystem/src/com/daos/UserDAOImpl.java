@@ -13,7 +13,7 @@ public class UserDAOImpl implements UserDAO{
 	public boolean authentication(String username, String password) {
 		boolean isAuthenticated = false;
 		Connection conn = GetConnection.openConnection();
-		String GET_USER = "select * from USER where username=?";
+		String GET_USER = "select * from USERS where username=?";
 		PreparedStatement ps;
 		try {
 			ps = conn.prepareStatement(GET_USER);
