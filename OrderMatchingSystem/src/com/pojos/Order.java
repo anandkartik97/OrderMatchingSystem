@@ -45,6 +45,22 @@ public class Order {
 		this.disclosedQuantity = disclosedQuantity;
 		this.stock = stock;
 	}
+	
+	public Order(Timestamp timestamp, double price, String category, String status, int quantity,
+			String type, String condition, int traderID, int disclosedQuantity, Stock stock) {
+		super();
+		this.timestamp = timestamp;
+		this.price = price;
+		this.category = category;
+		this.status = status;
+		this.quantity = quantity;
+		this.type = type;
+		this.condition = condition;
+		this.traderID = traderID;
+		//ISIN = iSIN;
+		this.disclosedQuantity = disclosedQuantity;
+		this.stock = stock;
+	}
 	public int getOrderID() {
 		return orderID;
 	}

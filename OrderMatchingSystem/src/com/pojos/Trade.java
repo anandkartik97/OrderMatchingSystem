@@ -26,6 +26,18 @@ public class Trade {
 		this.stock = stock;
 	}
 	
+	public Trade(int buyOrderID, int sellOrderID, int buyerID, int sellerID, double price, Timestamp timestamp,
+			int quantity, Stock stock) {
+		this.buyOrderID = buyOrderID;
+		this.sellOrderID = sellOrderID;
+		this.buyerID = buyerID;
+		this.sellerID = sellerID;
+		this.price = price;
+		this.timestamp = timestamp;
+		this.quantity = quantity;
+		this.stock = stock;
+	}
+	
 	public Trade() {
 		tradeID = 0;
 		buyOrderID = 0;

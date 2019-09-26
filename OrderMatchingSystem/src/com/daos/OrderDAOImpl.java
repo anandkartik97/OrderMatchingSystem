@@ -17,7 +17,7 @@ public class OrderDAOImpl implements OrderDAO{
 	public int addOrder(Order order) {
 		int rows = 0;
 		Connection conn = GetConnection.openConnection();
-		String ADD_ORDER = "insert into ORDER values(?,?,?,?,?,?,?,?,?,?)";
+		String ADD_ORDER = "insert into ORDERS (TIMESTAMP, PRICE, CATEGORY, STATUS, QUANTITY, TYPE, CONDITION, TRADERID, ISIN, DISCLOSEDQUANTITY) values(?,?,?,?,?,?,?,?,?,?)";
 		PreparedStatement ps;
 		try {
 			ps = conn.prepareStatement(ADD_ORDER);
@@ -54,6 +54,7 @@ public class OrderDAOImpl implements OrderDAO{
 			while(rs1.next())	{
 				ISIN = rs1.getInt("ISIN");
 				ps2 = conn.prepareStatement(GET_STOCK);
+				ps2.setInt(1, ISIN);
 				ResultSet rs2 = ps2.executeQuery();
 				Stock stock = null;
 				while(rs2.next())	{
@@ -94,7 +95,7 @@ public class OrderDAOImpl implements OrderDAO{
 	public List<Order> getWaitingOrders(int user_id) {
 		List<Order> orders = new ArrayList<Order>();
 		Connection conn = GetConnection.openConnection();
-		String GET_WAITING_ORDERS = "select * from ORDERS where status=? AND user_id=?";
+		String GET_WAITING_ORDERS = "select * from ORDERS where status=? AND TRADERID=?";
 		PreparedStatement ps;
 		try {
 			ps = conn.prepareStatement(GET_WAITING_ORDERS);
@@ -120,7 +121,7 @@ public class OrderDAOImpl implements OrderDAO{
 	public List<Order> getRejectedOrders(int user_id) {
 		List<Order> orders = new ArrayList<Order>();
 		Connection conn = GetConnection.openConnection();
-		String GET_WAITING_ORDERS = "select * from ORDERS where status=? AND user_id=?";
+		String GET_WAITING_ORDERS = "select * from ORDERS where status=? AND TRADERID=?";
 		String GET_STOCK = "select * from STOCK where ISIN = ?";
 		int ISIN;
 		PreparedStatement ps1, ps2;
@@ -132,6 +133,7 @@ public class OrderDAOImpl implements OrderDAO{
 			while(rs1.next())	{
 				ISIN = rs1.getInt("ISIN");
 				ps2 = conn.prepareStatement(GET_STOCK);
+				ps2.setInt(1, ISIN);
 				ResultSet rs2 = ps2.executeQuery();
 				Stock stock = null;
 				while(rs2.next())	{

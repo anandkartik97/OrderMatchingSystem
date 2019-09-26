@@ -17,7 +17,7 @@ public class TradeDAOImpl implements TradeDAO{
 	public int addTrade(Trade trade) {
 		int rows = 0;
 		Connection conn = GetConnection.openConnection();
-		String ADD_TRADE = "insert into ORDER values(?,?,?,?,?,?,?)";
+		String ADD_TRADE = "insert into TRADE (BUYORDERID, SELLORDERID, BUYERID, SELLERID, PRICE, TIMESTAMP, QUANTITY, ISIN) values(?,?,?,?,?,?,?, ?)";
 		PreparedStatement ps;
 		try {
 			ps = conn.prepareStatement(ADD_TRADE);
@@ -29,6 +29,7 @@ public class TradeDAOImpl implements TradeDAO{
 			//CHECK TYPE...............TIMESTAMP
 			ps.setTimestamp(6, trade.getTimestamp());
 			ps.setInt(7, trade.getQuantity());
+			ps.setInt(8, trade.getStock().getISIN());
 			rows=ps.executeUpdate();
 			conn.close();
 		} catch (SQLException e) {
@@ -54,6 +55,7 @@ public class TradeDAOImpl implements TradeDAO{
 			while(rs1.next())	{
 				ISIN = rs1.getInt("ISIN");
 				ps2 = conn.prepareStatement(GET_STOCK);
+				ps2.setInt(1, ISIN);
 				ResultSet rs2 = ps2.executeQuery();
 				Stock stock = null;
 				while(rs2.next())	{
@@ -87,6 +89,7 @@ public class TradeDAOImpl implements TradeDAO{
 			while(rs1.next())	{
 				ISIN = rs1.getInt("ISIN");
 				ps2 = conn.prepareStatement(GET_STOCK);
+				ps2.setInt(1, ISIN);
 				ResultSet rs2 = ps2.executeQuery();
 				Stock stock = null;
 				while(rs2.next())	{
