@@ -1,17 +1,18 @@
 package com.controllers;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import com.daos.OrderDAO;
 import com.daos.OrderDAOImpl;
 import com.daos.TradeDAO;
 import com.daos.TradeDAOImpl;
 import com.pojos.Order;
-import com.pojos.Orders;
+import com.pojos.Stock;
 import com.pojos.Trade;
 
 public class OrderMatching {
@@ -35,11 +36,13 @@ public class OrderMatching {
 		int buyerID=buyOrder.getTraderID();
 		int sellerID=sellOrder.getTraderID();
 		double price=buyOrder.getPrice(); //same as sellOrder.getPrice()
-		Timestamp timestamp=new Timestamp(System.currentTimeMillis());
+//		java.sql.Timestamp timestamp= new Timestamp(System.currentTimeMillis());
+//		java.util.Date timestamp=new 
+		Date timestamp=new Date();
 		int tradeID=1; //to be auto-incremented
 		
 		//Add the Executed Trade
-		Trade trade=new Trade(tradeID, buyOrderID, sellOrderID, buyerID, sellerID, price, timestamp, quantity);
+		Trade trade=new Trade(tradeID, buyOrderID, sellOrderID, buyerID, sellerID, price, (java.sql.Timestamp) timestamp, quantity, buyOrder.getStock());
 		TradeDAO tradeDAO=new TradeDAOImpl();
 		tradeDAO.addTrade(trade);
 		
@@ -171,7 +174,7 @@ public class OrderMatching {
 					}
 				}
 			}
-			return flag;
+			return false;
 		}
 	
 		
@@ -205,62 +208,276 @@ public class OrderMatching {
 		 boolean executed =false;
 		 List<Order> orders = orderDAO.getAll();
 		
-		 do {
-			   Order buys = buyList.get(buy_index);
-			   Order sells =sellList.get(sell_index);
-			   if(sells.getType().trim().equals("MARKET")&&buys.getType().trim().equals("MARKET")) 
-			   {
-				   if(buys.getTimestamp().after(sells.getTimestamp())) {
-				   executed=orders.sellMarket(sellList, buyList, sell_index);
-				   }
-				   else
-				   {
-					   executed=orders.buyMarket(sellList, buyList, buy_index);
-				   }
-			   }
-			   else if(sells.getType().trim().equals("MARKET"))
-			   {
-				   executed=orders.sellMarket(sellList, buyList, sell_index);
-				   
-			   }
-			   else if(buys.getType().trim().equals("MARKET"))
-			   {
-				   executed=orders.buyMarket(sellList, buyList, buy_index);
-				   
-			   }
-			   else 
-			   {
-		   
-				   if(buys.getTimestamp().after(sells.getTimestamp())) {
-					   if(sells.getCondition().trim().equals("ALLORNONE"))
-					   {
-						   executed=orders.OrderMatchingSystemSellFull(sellList, buyList, sell_index);
-					   }
-					   else
-					   {
-						   executed=orders.sellLimitOrder(sellList, buyList, sell_index);
-					   }
-					   if(!executed) {
-						   sell_index++;
-					   }
-					   
-				   }
-				   else{
-			   
-					   if(buys.getCondition().trim().equals("ALLORNONE")) {
-						   executed=orders.OrderMatchingSystemBuyFull(sellList, buyList, buy_index);
-					   }
-					   else
-					   {
-						   executed=orders.buyLimitOrder(sellList, buyList, buy_index);
-					   }
-					   if(!executed) {
-						   buy_index++;
-					   }
-				   }
-			   
-			   }
-		   }while (!executed&&(buy_index!=buy_size)&&(sell_index!=sell_size)&&(buy_index<3)&&(sell_index<3));
+//		 do {
+//			   Order buys = buyList.get(buy_index);
+//			   Order sells =sellList.get(sell_index);
+//			   if(sells.getType().trim().equals("MARKET")&&buys.getType().trim().equals("MARKET")) 
+//			   {
+//				   if(buys.getTimestamp().after(sells.getTimestamp())) {
+//				   executed=orders.sellMarket(sellList, buyList, sell_index);
+//				   }
+//				   else
+//				   {
+//					   executed=orders.buyMarket(sellList, buyList, buy_index);
+//				   }
+//			   }
+//			   else if(sells.getType().trim().equals("MARKET"))
+//			   {
+//				   executed=orders.sellMarket(sellList, buyList, sell_index);
+//				   
+//			   }
+//			   else if(buys.getType().trim().equals("MARKET"))
+//			   {
+//				   executed=orders.buyMarket(sellList, buyList, buy_index);
+//				   
+//			   }
+//			   else 
+//			   {
+//		   
+//				   if(buys.getTimestamp().after(sells.getTimestamp())) {
+//					   if(sells.getCondition().trim().equals("ALLORNONE"))
+//					   {
+//						   executed=orders.OrderMatchingSystemSellFull(sellList, buyList, sell_index);
+//					   }
+//					   else
+//					   {
+//						   executed=orders.sellLimitOrder(sellList, buyList, sell_index);
+//					   }
+//					   if(!executed) {
+//						   sell_index++;
+//					   }
+//					   
+//				   }
+//				   else{
+//			   
+//					   if(buys.getCondition().trim().equals("ALLORNONE")) {
+//						   executed=orders.OrderMatchingSystemBuyFull(sellList, buyList, buy_index);
+//					   }
+//					   else
+//					   {
+//						   executed=orders.buyLimitOrder(sellList, buyList, buy_index);
+//					   }
+//					   if(!executed) {
+//						   buy_index++;
+//					   }
+//				   }
+//			   
+//			   }
+//		   }while (!executed&&(buy_index!=buy_size)&&(sell_index!=sell_size)&&(buy_index<3)&&(sell_index<3));
+	}
+	
+	
+	public static void main(String[] args) {
+		List<Order> buyList=new ArrayList<Order>();
+		List<Order> sellList=new ArrayList<Order>();
+		Comparator<Order> compareBuy = Comparator.comparing(Order::getPrice).reversed()
+		.thenComparing(Order::getTimestamp);
+
+		Comparator<Order> compareSell = Comparator.comparing(Order::getPrice)
+		.thenComparing(Order::getTimestamp);
+		Order[] o1=new Order[6];
+		Order[] o2=new Order[4];
+		Stock s=new Stock();
+		
+	
+		Collections.sort(buyList, compareBuy);
+		Collections.sort(sellList, compareSell);
+			o1[0]=new Order(1, new java.sql.Timestamp(System.currentTimeMillis()), 120.05, "buy", 
+					"pending", 20, "limit", "allornone", 1, 20, s);
+			
+			buyList.add(o1[0]);
+			OrderMatching orderMatching=new OrderMatching();
+			boolean flag=orderMatching.buyLimitOrder(sellList, buyList, 0);
+			if(flag) {
+				System.out.println("The order is executed 1");
+			}
+			Collections.sort(buyList,compareBuy);
+			
+			try {
+				TimeUnit.SECONDS.sleep(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			o2[0]=new Order(2, new java.sql.Timestamp(System.currentTimeMillis()), 120.05, "sell", 
+					"pending", 5, "limit", "allornone", 2, 5, s);
+			sellList.add(o2[0]);
+			flag=orderMatching.sellLimitOrder(sellList, buyList, 0);
+			if(flag) {
+				System.out.println("The order is executed 2");
+			}
+			else {
+				System.out.println("Not Executed");
+			}
+			Collections.sort(sellList,compareSell);
+			
+			try {
+				TimeUnit.SECONDS.sleep(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}			
+			o1[1]=new Order(3, new java.sql.Timestamp(System.currentTimeMillis()), 120.10, "buy", 
+					"pending", 5, "limit", "minimumfill", 3, 5, s);
+			buyList.add(o1[1]);
+			flag=orderMatching.buyLimitOrder(sellList, buyList, 1);
+			if(flag) {
+				System.out.println("The order is executed");
+			}
+			else {
+				System.out.println("Not Executed");
+			}
+			Collections.sort(buyList,compareBuy);
+			
+			
+			try {
+				TimeUnit.SECONDS.sleep(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			o1[2]=new Order(4, new java.sql.Timestamp(System.currentTimeMillis()), 120.10, "buy", 
+					"pending", 4, "limit", "minimumfill", 4, 4, s);
+			
+			buyList.add(o1[2]);
+			flag=orderMatching.buyLimitOrder(sellList, buyList, 2);
+			if(flag) {
+				System.out.println("The order is executed");
+			}
+			else {
+				System.out.println("Not Executed");
+			}
+			Collections.sort(buyList,compareBuy);
+			
+			try {
+				TimeUnit.SECONDS.sleep(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			o2[1]=new Order(5, new java.sql.Timestamp(System.currentTimeMillis()), 120.05, "sell", 
+					"pending", 5, "limit", "minimumfill", 5, 5, s);
+			sellList.add(o2[1]);
+			flag=orderMatching.sellLimitOrder(sellList, buyList, 1);
+			if(flag) {
+				System.out.println("The order is executed");
+			}
+			else {
+				System.out.println("Not Executed");
+			}
+			Collections.sort(sellList,compareSell);
+
+			
+			try {
+				TimeUnit.SECONDS.sleep(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			o2[2]=new Order(6, new java.sql.Timestamp(System.currentTimeMillis()), 120.10, "sell", 
+					"pending", 7, "limit", "minimumfill", 6, 7, s);
+			sellList.add(o2[2]);
+			flag=orderMatching.sellLimitOrder(sellList, buyList, 2);
+			if(flag) {
+				System.out.println("The order is executed");
+			}
+			else {
+				System.out.println("Not Executed");
+			}
+			Collections.sort(sellList,compareSell);
+			
+			try {
+				TimeUnit.SECONDS.sleep(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			
+			
+			o2[3]=new Order(7, new java.sql.Timestamp(System.currentTimeMillis()), 120.15, "sell", 
+					"pending", 8, "limit", "minimumfill", 7, 8, s);
+			
+			sellList.add(o2[3]);
+			flag=orderMatching.sellLimitOrder(sellList, buyList, 3);
+			if(flag) {
+				System.out.println("The order is executed");
+			}
+			else {
+				System.out.println("Not Executed");
+			}
+			Collections.sort(sellList,compareSell);
+			
+			
+			try {
+				TimeUnit.SECONDS.sleep(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			o1[3]=new Order(8, new java.sql.Timestamp(System.currentTimeMillis()), 120.05, "buy", 
+					"pending", 8, "limit", "minimumfill", 8, 8, s);
+			buyList.add(o1[3]);
+			flag=orderMatching.buyLimitOrder(sellList, buyList, 3);
+			if(flag) {
+				System.out.println("The order is executed");
+			}
+			else {
+				System.out.println("Not Executed");
+			}
+			Collections.sort(buyList,compareBuy);
+			
+			try {
+				TimeUnit.SECONDS.sleep(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			o1[4]=new Order(9, new java.sql.Timestamp(System.currentTimeMillis()), 120.15, "buy", 
+					"pending", 7, "limit", "allornone", 9, 7, s);
+			buyList.add(o1[4]);
+			flag=orderMatching.buyLimitOrder(sellList, buyList, 4);
+			if(flag) {
+				System.out.println("The order is executed");
+			}
+			else {
+				System.out.println("Not Executed");
+			}
+			Collections.sort(buyList,compareBuy);
+			
+			
+			try {
+				TimeUnit.SECONDS.sleep(1);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			o1[5]=new Order(10, new java.sql.Timestamp(System.currentTimeMillis()), 120.05, "buy", 
+					"pending", 15, "limit", "allornone", 10, 15, s);
+			buyList.add(o1[5]);
+			flag=orderMatching.buyLimitOrder(sellList, buyList, 5);
+			if(flag) {
+				System.out.println("The order is executed");
+			}
+			else {
+				System.out.println("Not Executed");
+			}
+			Collections.sort(buyList,compareBuy);
+			
+			
+
+			
+			
+			
+			
+
+			
 	}
 	
 //	public static void main(String[] args) {
