@@ -13,6 +13,7 @@ class TestUserDAO {
 	void testAuthentication() {
 		UserDAO obj = new UserDAOImpl();
 		assertEquals(true, obj.authentication("prani", "prani"));
+		
 	}
 
 }
