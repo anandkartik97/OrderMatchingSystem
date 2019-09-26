@@ -383,7 +383,7 @@ public class OrderMatching {
 			sellList.add(o2[2]);
 			flag=orderMatching.sellLimitOrder(sellList, buyList, 2);
 			if(flag) {
-				System.out.println("The order is executed");
+				System.out.println("The order is executed!!");
 			}
 			else {
 				System.out.println("Not Executed");
